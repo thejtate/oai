@@ -1,0 +1,49 @@
+.clearfix {
+  *zoom: 1;
+
+  &:before,
+  &:after {
+    display: table;
+    content: "";
+    line-height: 0;
+  }
+
+  &:after {
+    clear: both;
+  }
+}
+
+.pull-left {
+  float: left;
+}
+
+.pull-right {
+  float: right;
+}
+
+.pull-center {
+  text-align: center;
+}
+
+.content-left {
+  text-align: left;
+}
+
+.content-right {
+  text-align: right;
+}
+
+.valign {
+  z-index: 1;
+  position: relative;
+  top: 50%;
+  @include translate(0, -50%);
+
+  .section-media & {
+
+    @media (max-width: 767px) {
+      @include translate(0, 0);
+      top: 10px;
+    }
+  }
+}

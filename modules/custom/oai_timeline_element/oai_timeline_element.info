@@ -1,0 +1,4 @@
+name = Oai timeline element
+description = Add new element to timeline from different content types.
+core = 7.x
+package = custom

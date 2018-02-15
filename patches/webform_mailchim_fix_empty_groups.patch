@@ -1,0 +1,19 @@
+Index: trunk/sites/all/modules/contrib/webform_mailchimp/webform_mailchimp.module
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- trunk/sites/all/modules/contrib/webform_mailchimp/webform_mailchimp.module	(revision 4a766f7d846d08cd8c591937ed60c5d18752df2d)
++++ trunk/sites/all/modules/contrib/webform_mailchimp/webform_mailchimp.module	(revision )
+@@ -127,7 +127,10 @@
+             $sorted_choices[$id_name[0]] = $id_name[1];
+           }
+           foreach ($submission->data[$key] as $filled_out_value) {
++            if(!empty($sorted_choices[$filled_out_value])) {
+-            $groupfields_replacements[$groupfields_key_array[$field['form_key']]][] = str_replace(",", "\,", $sorted_choices[$filled_out_value]);
++              $groupfields_replacements[$groupfields_key_array[$field['form_key']]][] = str_replace(",", "\,", $sorted_choices[$filled_out_value]);
++            }
++
+           }
+         }
+       }

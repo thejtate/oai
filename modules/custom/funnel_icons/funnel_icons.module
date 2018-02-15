@@ -1,0 +1,129 @@
+<?php
+/**
+ * @file
+ * Funnel icons
+ */
+
+/**
+ * Implements hook_field_widget_info().
+ */
+function funnel_icons_field_widget_info() {
+  $return = array();
+
+  $return['funnel_icons'] = array(
+    'label' => t('Icon select'),
+    'field types' => array('text'),
+    'settings' => array('classes' => ''),
+  );
+
+  return $return;
+}
+
+/**
+ * Implements hook_field_formatter_info().
+ */
+function funnel_icons_field_formatter_info() {
+  return array(
+    'funnel_icons' => array(
+      'label' => t('Icon'),
+      'field types' => array('text'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function funnel_icons_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  $element = array();
+
+  switch ($display['type']) {
+    case 'funnel_icons':
+      $additional_classes = !empty($instance['widget']['settings']['classes']) ? explode(' ', $instance['widget']['settings']['classes']) : array();
+      foreach ($items as $delta => $item) {
+        $element[$delta] = array(
+          '#theme' => 'html_tag',
+          '#tag' => 'span',
+          '#attributes' => array(
+            'class' => array_merge($additional_classes, explode(' ', strip_tags($item['value']))),
+          ),
+        );
+      }
+      break;
+  }
+  return $element;
+}
+
+/**
+ * Implements hook_field_widget_settings_form().
+ */
+function funnel_icons_field_widget_settings_form($field, $instance) {
+  $settings = $field['settings'];
+  $form = array();
+
+  if ($field['type'] == 'text') {
+    $form['classes'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Element classes'),
+      '#default_value' => !empty($settings['classes']) ? $settings['classes'] : '',
+      '#required' => TRUE,
+      '#description' => t('Additional icon classes separate by space.'),
+    );
+  }
+
+  return $form;
+}
+
+/**
+ * Implements hook_field_widget_form().
+ */
+function funnel_icons_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
+
+  $element['value'] = $element + array(
+    '#type' => 'textfield',
+    '#default_value' => isset($items[$delta]['value']) ? $items[$delta]['value'] : NULL,
+    '#maxlength' => $field['settings']['max_length'],
+    '#attributes' => array('class' => array('text-full', 'fnl-iconpicker')),
+    '#after_build' => array('funnel_icons_widget_after_build'),
+  );
+
+  return $element;
+}
+
+/**
+ * Form element after build, add resources.
+ *
+ * @param $element
+ * @param $form_state
+ * @return mixed
+ */
+function funnel_icons_widget_after_build($element, &$form_state) {
+  funnel_icons_add_resources_once();
+
+  return $element;
+}
+
+
+function funnel_icons_add_resources_once() {
+
+  $once = &drupal_static(__FUNCTION__);
+  if(empty($once)) {
+    $path = drupal_get_path('module', 'funnel_icons');
+
+    drupal_add_css($path . '/libs/font_icon_picker/css/jquery.fonticonpicker.min.css');
+    drupal_add_css($path . '/libs/font_icon_picker/themes/grey-theme/jquery.fonticonpicker.grey.min.css');
+    drupal_add_css($path . '/libs/fonts/ss-standard/webfonts/ss-standard.css');
+    drupal_add_css($path . '/libs/fonts/ss-social-regular/webfonts/ss-social-regular.css');
+    drupal_add_css($path . '/libs/fonts/ss-symbolicons-block/webfonts/ss-symbolicons-block.css');
+    drupal_add_css($path . '/css/funnel_icons.css');
+
+    drupal_add_js($path . '/libs/font_icon_picker/jquery.fonticonpicker.min.js', array('scope' => 'footer'));
+    drupal_add_js($path . '/libs/fonts_configs/ss-social.js', array('scope' => 'footer'));
+    drupal_add_js($path . '/libs/fonts_configs/ss-standard-regular.js', array('scope' => 'footer'));
+    drupal_add_js($path . '/libs/fonts_configs/ss-symbolicons-block.js', array('scope' => 'footer'));
+
+    drupal_add_js($path . '/js/funnel_icons.js', array('scope' => 'footer'));
+
+    $once = TRUE;
+  }
+}

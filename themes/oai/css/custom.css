@@ -1,0 +1,153 @@
+/* Top menu*/
+.site-header .control li {
+  list-style: none;
+}
+
+/* Main menu */
+.site-header .nav > ul > li {
+  list-style: none;
+}
+
+.field-collection-container,
+.field-collection-view {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.field-collection-view ul.field-collection-view-links {
+  margin-top: 0;
+}
+
+.field-collection-container,
+.field-collection-container .field-item {
+  margin-bottom: 0;
+}
+
+.node-page-blocks .col-md-6 ul.field-collection-view-links,
+.col-md-6 .item-with-icon ul.field-collection-view-links,
+.col-md-6 article.item-style-h ul.field-collection-view-links,
+.row .col-sm-6.item-style-o ul.field-collection-view-links,
+.front .field-collection-view ul.field-collection-view-links,
+.section.section-content .item.col-md-6 ul.field-collection-view-links {
+  position: absolute;
+  z-index: 3;
+  right: 0;
+}
+
+.row .col-sm-6.item-style-o ul.field-collection-view-links {
+  bottom: 0;
+}
+
+ul.field-collection-view-links li {
+  float: left;
+  margin-left: 5px;
+}
+
+ul.field-collection-view-links li a {
+  padding: 2px 5px;
+  font-size: 11px;
+  text-transform: uppercase;
+  margin-right: 0;
+  color: #333;
+  border-style: solid;
+  background-color: #DDD;
+  border-color: #BBB;
+  border-width: 1px;
+  height: auto;
+  display: block;
+  text-decoration: none;
+}
+
+.action-links-field-collection-add li a {
+  color: #333;
+  border-style: solid solid solid;
+  background-color: #DDD;
+  border-color: #BBB;
+  border-width: 1px;
+  height: auto;
+  margin-right: 0.5em;
+  padding: 5px 10px;
+  text-decoration: none;
+}
+
+.action-links li {
+  list-style-type: none;
+}
+
+.node-type-participant-inf .section-content .text-blocks-wrapper .text-block .field-collection-view {
+  height:100%;
+}
+
+.node-type-participant-inf ul.field-collection-view-links {
+  position: absolute;
+  bottom: 0;
+  z-index: 3;
+}
+.node-type-participant-inf ul.field-collection-view-links li {
+  margin-bottom: 0;
+}
+.modal.b-modal.in div.contextual-links-wrapper {
+  right: 30px;
+  top: 30px;
+}
+
+.modal.b-modal.in .contextual-links-region {
+  position: initial;
+}
+
+/* Page with blocks */
+.field-collection-view .long-text .entity-field-collection-item {
+  float: none;
+}
+
+/* Search */
+.page-search .search-result .title {
+  background: none;
+  text-align: left;
+  margin-bottom: 0;
+}
+
+.page-search .search-result .title a {
+  color: #146fa0;
+}
+
+.node-members .list-type-a ul li p {
+  margin-bottom: 0;
+}
+
+/* Page with block list */
+.node-page-with-block-list .link-type-c .file-icon,
+.node-page-with-block-list .link-type-c .file-size {
+  display: none;
+}
+
+.node-type-donors-list .section-links ul.field-collection-view-links {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: 3;
+}
+.list-type-a p {
+  margin: 0 0 6px;
+  padding: 0;
+}
+
+/* Page with two columns */
+.list-type-a .text-block-list-inner {
+  margin: 0 0 30px;
+}
+
+.field-collection-view-final .list-type-a .text-block-list-inner {
+  margin: 0;
+}
+
+/* News landing */
+.view-news .link-type-e .pager-load-more.pager-load-more-empty {
+  display: none;
+}
+
+/* Events */
+.node-event .field-collection-container ul.action-links {
+  bottom: -24px;
+}

@@ -1,0 +1,56 @@
+.section-links {
+
+  .item {
+    font-size: 18px;
+    text-transform: uppercase;
+    font-family: $opensans-bold;
+
+    @media (min-width: $bp-small) {
+      font-size: 24px;
+    }
+
+    .ico {
+      position: absolute;
+      top: calc(50% - 16px);
+      left: 20px;
+      color: inherit !important;
+      font-size: 24px;
+      margin-top: 3px;
+      @include transition(color .3s);
+
+      @media (min-width: $bp-small) {
+        margin-top: 2px;
+        left: 47px;
+        font-size: 24px;
+      }
+    }
+  }
+
+  a {
+    display: block;
+    padding: 15px 58px;
+    color: #000;
+    text-decoration: none;
+    position: relative;
+
+    @media (min-width: $bp-small) {
+      padding: 23px 82px;
+    }
+
+    &.active {
+      opacity: .4;
+
+      &:hover .ico {
+        @include animation(move-right-left 1s infinite linear);
+      }
+    }
+
+    &:not(.active) {
+      color: #fff;
+
+      .ico {
+        color: #fff !important;
+      }
+    }
+  }
+}

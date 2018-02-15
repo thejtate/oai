@@ -1,0 +1,122 @@
+ul li.leaf {
+  list-style: none;
+}
+
+.contextual-links li a {
+  background: none !important;
+
+  &:hover {
+    background: none !important;
+  }
+}
+
+.field-collection-container, .field-collection-container .field-item {
+  position: relative;
+}
+
+.field-collection-container ul.action-links {
+  position: absolute;
+  bottom: 3px;
+  left: 0;
+  z-index: 10;
+
+  li {
+    margin: 0;
+  }
+}
+
+.content-wrapper .content-inner .text .field-collection-container ul.action-links {
+  position: static;
+}
+
+.site-header, .site-footer {
+  div.contextual-links-wrapper {
+    right: -25px !important;
+  }
+}
+
+.site-header .control div.contextual-links-wrapper {
+  top: 18px;
+}
+
+.site-footer .control div.contextual-links-wrapper {
+  right:0 !important;
+}
+
+.logged-in {
+
+  div.tabs, .contextual-links-wrapper {
+
+    a {
+      opacity: 1 !important;
+      color: #000 !important;
+    }
+  }
+
+  .contextual-links-wrapper {
+    font-size: 13px;
+
+    li {
+      font-weight: normal;
+      text-decoration: none;
+      text-transform: none;
+      margin: 0 !important;
+      font-family: Arial, "Helvetica CY", "Nimbus Sans L", sans-serif;
+      padding: 0 !important;
+
+      a {
+        text-decoration: none;
+        text-transform: none;
+      }
+    }
+  }
+
+  div.tabs {
+    position: absolute;
+    z-index: 500;
+    left: 0;
+    top: 145px;
+    font-size: 13px;
+    text-align: center;
+
+    @media (min-width: 516px) {
+      top: 44px;
+    }
+
+    @media (min-width: $bp-middle) {
+      left: 50%;
+      @include translateX(-50%);
+      top: 30px;
+    }
+
+    .tabs {
+      border-bottom: none;
+      padding: 0;
+
+      li {
+        display: inline-block;
+        vertical-align: middle;
+        margin: 0 0 0 2px;
+
+        &.active a {
+          border: 1px solid #ddd;
+        }
+      }
+
+      a {
+        border: 1px solid #ddd;
+        margin: 0;
+        padding: 5px 18px;
+        display: block;
+      }
+    }
+  }
+}
+
+.field-collection-container {
+  margin: 0;
+
+  .field-items .field-item {
+    margin: 0;
+  }
+}

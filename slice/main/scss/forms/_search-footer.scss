@@ -1,0 +1,37 @@
+.form-search-footer {
+  position: absolute;
+  top: 27px;
+  right: 0;
+
+  @media (min-width: $bp-small) {
+    float: right;
+    position: relative;
+    top: auto;
+    right: auto;
+  }
+
+  input:not([type=submit]):not([type=checkbox]):not([type=radio]) {
+    border: 1px solid $color;
+    @include input-placeholder($color);
+    color: $color;
+    width: 132px;
+    font-size: 11px;
+    padding: 5px 25px 5px 9px;
+    height: 25px;
+    line-height: 25px;
+  }
+
+  .form-submit {
+    @include transition(background .4s);
+    @include oneline-sprite-box($icons, search-icon);
+    @include text-hide();
+    border: none;
+    outline: none;
+    cursor: pointer;
+    margin: -9px 0 0;
+    padding: 0;
+    position: absolute;
+    top: 50%;
+    right: 6px;
+  }
+}

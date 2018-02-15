@@ -1,0 +1,12 @@
+.form-contact {
+  background: $color-i;
+  padding: 20px;
+
+  @media (min-width: $bp-small) {
+    padding: 25px;
+  }
+
+  label {
+    white-space: nowrap;
+  }
+}

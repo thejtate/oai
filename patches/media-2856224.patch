@@ -1,0 +1,16 @@
+Index: trunk/sites/all/modules/contrib/media/includes/media.fields.inc
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- trunk/sites/all/modules/contrib/media/includes/media.fields.inc	(revision 59a99ef5619f1a78254af169022dcfe136738f1b)
++++ trunk/sites/all/modules/contrib/media/includes/media.fields.inc	(revision )
+@@ -134,7 +134,7 @@
+   elseif (module_exists('translation') && $element['#entity_type'] == 'node' && translation_supported_type($element['#entity']->type)) {
+     $element['#media_parent_entity_form_langcode'] = $element['#entity']->language;
+     $element['#media_parent_entity_source_langcode'] = $element['#entity']->language;
+-  } elseif ($element['#entity_type'] == 'field_collection_item' && property_exists($form['#entity'], 'language')) {
++  } elseif ($element['#entity_type'] == 'field_collection_item' && !empty($form['#entity']) && property_exists($form['#entity'], 'language')) {
+     $element['#media_parent_entity_form_langcode'] = $form['#entity']->language;
+   }
+ 

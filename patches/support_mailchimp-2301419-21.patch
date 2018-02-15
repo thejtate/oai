@@ -1,0 +1,95 @@
+diff --git a/webform_mailchimp.module b/webform_mailchimp.module
+index 8250fa5..87ddf4c 100644
+--- a/webform_mailchimp.module
++++ b/webform_mailchimp.module
+@@ -142,40 +142,60 @@ function webform_mailchimp_webform_submission_insert($node, $submission) {
+     // If we have an email address and a list is set, try to subscribe the user.
+     if ($email_address != '' && !empty($mailchimp_lists)) {
+       $q = mailchimp_get_api_object();
+-      if ($q) {
+-        foreach ($mailchimp_lists as $mailchimp_list) {
+-          try {
+-            // Backwards compatibility for the Mailchimp API.
+-            if (method_exists($q, 'listSubscribe')) {
+-              // MailChimp API library 1.x.
+-              $success = $q->listSubscribe($mailchimp_list, $email_address, $mergefields_replacements, 'html', $double_opt_in, TRUE);
+-            }
+-            else {
+-              // MailChimp API library 2.x.
+-              $success = $q->lists->subscribe($mailchimp_list, array('email' => $email_address), $mergefields_replacements, 'html', $double_opt_in, TRUE);
+-            }
+-
+-            if ($success) {
+-              watchdog('webform_mailchimp', 'E-mail subscribed: %email', array('%email' => $email_address), WATCHDOG_INFO);
+-            }
++      if (!$q) {
++        watchdog('webform_mailchimp', 'Could not get the Mailchimp API object.', array(), WATCHDOG_ERROR);
++        return;
++      }
++      foreach ($mailchimp_lists as $mailchimp_list) {
++        $use_v2_api = method_exists($q, 'listSubscribe');
++        if ($use_v2_api) {
++          $success = $q->listSubscribe($mailchimp_list, $email_address, $mergefields_replacements, 'html', $double_opt_in, TRUE);
++          if ($success) {
++            webform_mailchimp_log_subscription($email_address, $success);
+           }
+-          catch (Exception $e) {
+-            watchdog(
+-              'webform_mailchimp',
+-              'E-mail not subscribed: %email Error: %error_code <br> %error_message',
+-              array(
+-                '%email' => $email_address,
+-                '%error_message' => $q->errorMessage,
+-                '%error_code' => $q->errorCode,
+-              ),
+-              WATCHDOG_ERROR
+-            );
++          else {
++            webform_mailchimp_log_subscription($email_address, $success, $success->errorCode, $success->errorMessage);
++          }
++        }
++        else {
++          try {
++            $q->lists->subscribe($mailchimp_list, array('email' => $email_address), $mergefields_replacements, 'html', $double_opt_in, TRUE);
++            webform_mailchimp_log_subscription($email_address, TRUE);
++          } catch (Exception $e) {
++            webform_mailchimp_log_subscription($email_address, FALSE, $e->getCode(), $e->getMessage());
+           }
+         }
+-      }
+-      else {
+-        watchdog('webform_mailchimp', 'Could not get the Mailchimp API object.', array(), WATCHDOG_ERROR);
+       }
+     }
+   }
+ }
++
++/**
++ * Log a subscription status to the watchdog table.
++ *
++ * @param string $email_address
++ *   The email address.
++ * @param boolean $status
++ *   If the subscription was successful.
++ * @param string $error_code
++ *   The error code if there was an error.
++ * @param string $error_message
++ *   The error message.
++ */
++function webform_mailchimp_log_subscription($email_address, $status, $error_code = '', $error_message = '') {
++  if ($status) {
++    watchdog('webform_mailchimp', 'E-mail subscribed: %email', array('%email' => $email_address), WATCHDOG_INFO);
++  }
++  else {
++    watchdog(
++      'webform_mailchimp',
++      'E-mail not subscribed: %email Error: %error_code <br> %error_message',
++      array(
++        '%email' => $email_address,
++        '%error_message' => $error_code,
++        '%error_code' => $error_message,
++      ),
++      WATCHDOG_ERROR
++    );
++  }
++}

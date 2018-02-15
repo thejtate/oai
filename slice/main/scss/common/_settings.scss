@@ -1,0 +1,62 @@
+$icons: sprite-map('icons/*.png', $spacing: 8px, $layout: 'smart');
+//$icons2: sprite-map("icons2x/*.png", $layout: smart);
+
+$experimental-support-for-svg: true;
+$experimental-support-for-opera: false;
+
+//color
+$color: #000;
+$color-a: #fff;
+$color-b: #772231;
+$color-c: #571823;
+$color-d: #8f6fb1;
+$color-e: #685180;
+$color-f: #146fa0;
+$color-g: #0f587f;
+$color-h: #6c6c62;
+$color-i: #968a77;
+$color-j: #d3ae5b;
+$color-k: #a4b86d;
+$color-l: #799c9b;
+$color-m: #b1dde5;
+$color-n: #a1a1a1;
+$color-o: #a07fc3;
+$color-p: #ededed;
+$color-q: #d9d9d9;
+$color-r: #737373;
+$color-s: #f2e66f;
+
+
+//fonts
+$opensans-bold: opensans-bold;
+$opensans-light: opensans-light;
+$opensans-semibold: opensans-semibold;
+$opensans-regular: opensans-regular;
+$OpenSans-Italic: OpenSans-Italic;
+
+
+//grid vars
+//widths
+$width-xsmall: 90%;
+//xs < $bp-small
+$bp-small: 768px;
+$width-small: 730px;
+//$bp-middle > sm >= $bp-small
+$bp-middle: 992px;
+$width-middle: 970px;
+//$bp-large > md >= $bp-middle
+$bp-large: 1350px;
+$width-large: 1350px;
+
+//offsets
+$container-padding-left: 0;
+$container-padding-right: 0;
+
+$container-fluid-padding-left: 0;
+$container-fluid-padding-right: 0;
+
+$row-margin-left: 0;
+$row-margin-right: 0;
+
+$col-padding-left: 0;
+$col-padding-right: 0;

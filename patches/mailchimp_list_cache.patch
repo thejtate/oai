@@ -1,0 +1,16 @@
+Index: trunk/sites/all/modules/contrib/mailchimp/mailchimp.module
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- trunk/sites/all/modules/contrib/mailchimp/mailchimp.module	(revision e477fd2c509c6fd97409d63901fe09845b3df3d3)
++++ trunk/sites/all/modules/contrib/mailchimp/mailchimp.module	(revision )
+@@ -203,7 +203,7 @@
+   $cache = $reset ? NULL : cache_get('lists', 'cache_mailchimp');
+   $lists = array();
+   // Return cached lists:
+-  if ($cache) {
++  if ($cache && !empty($cache->data)) {
+     $lists = $cache->data;
+   }
+   // Query lists from the MailChimp API and store in cache:

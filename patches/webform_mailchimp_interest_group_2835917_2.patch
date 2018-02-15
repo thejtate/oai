@@ -1,0 +1,95 @@
+diff --git a/webform_mailchimp/webform_mailchimp.module b/webform_mailchimp/webform_mailchimp.module
+index 65932c8..7cd84ae 100644
+--- a/webform_mailchimp/webform_mailchimp.module
++++ b/webform_mailchimp/webform_mailchimp.module
+@@ -113,30 +113,24 @@ function webform_mailchimp_webform_submission_insert($node, $submission) {
+     }
+
+     $groupfields_replacements = array();
+-    // Create the mergefield array.
++    // Create the groupfields array.
+     if (!empty($groupfields_key_array) && is_array($groupfields_key_array)) {
+       foreach ($node->webform['components'] as $key => $field) {
+         if (!empty($groupfields_key_array[$field['form_key']])) {
+           // We are dealing with checkboxes, dropdowns and have received the id
+           // instead of the raw value. So we need to extract the value and send
+           // that instead.
+-          $choices = explode("\n", $field['extra']['items']);
++          $choices = explode("\n", trim($field['extra']['items']));
+           $sorted_choices = array();
+           foreach ($choices as $choice_key => $choice_val) {
+             $id_name = explode('|', trim($choice_val));
+             $sorted_choices[$id_name[0]] = $id_name[1];
+           }
+-          foreach ($submission->data[$key] as $filled_out_value) {
+-            $groupfields_replacements[$groupfields_key_array[$field['form_key']]][] = str_replace(",", "\,", $sorted_choices[$filled_out_value]);
++          foreach ($submission->data[$key] as $value) {
++            $groupfields_replacements[$value] = TRUE;
+           }
+         }
+       }
+-      foreach ($groupfields_replacements as $groupname => $values_array) {
+-        $mergefields_replacements['GROUPINGS'][] = array(
+-          'name' => $groupname,
+-          'groups' => implode(',', $values_array),
+-        );
+-      }
+     }
+
+     // If we have an email address and a list is set, try to subscribe the user.
+@@ -195,3 +189,55 @@ function webform_mailchimp_log_subscription($email_address, $status, $error_code
+     );
+   }
+ }
++
++/**
++ * Implementation of hook_webform_select_options_info().
++ */
++function webform_mailchimp_webform_select_options_info() {
++  $items = array();
++
++  $lists = mailchimp_get_lists();
++  $lists = !empty($lists) ? $lists : array();
++  foreach ($lists as $list) {
++    $list_name = !empty($list->name) ? $list->name : '';
++    $list_groups = !empty($list->intgroups) ? $list->intgroups : array();
++
++    foreach ($list_groups as $group) {
++      $group_name = !empty($group->title) ? $group->title : '';
++      $group_id = !empty($group->id) ? $group->id : '';
++      $group_interests = !empty($group->interests) ? $group->interests : array();
++
++      if ($group_id && $group_name && $group_interests) {
++        $items[$group_id] = array(
++          'title' => $list_name . ': ' . $group_name,
++          'options callback' => 'webform_mailchimp_list_interests',
++          'options arguments' => $group_interests,
++        );
++      }
++    }
++  }
++
++  return $items;
++}
++
++/**
++ * Build an options list for use by webforms.
++ *
++ * @param $component
++ * @param $flat
++ * @param $arguments
++ * @return array
++ */
++function webform_mailchimp_list_interests($component, $flat, $arguments) {
++  $options = array();
++  foreach ($arguments as $interest) {
++    $interest_id = !empty($interest->id) ? $interest->id : '';
++    $interest_name = !empty($interest->name) ? $interest->name : '';
++
++    if ($interest_id && $interest_name) {
++      $options[$interest_id] = $interest_name;
++    }
++  }
++
++  return $options;
++}

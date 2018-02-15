@@ -1,0 +1,321 @@
+html {
+  height: 100%;
+  -webkit-font-smoothing: antialiased;
+
+  &.desktop {
+
+    a[href^="tel"] {
+      cursor: default;
+      pointer-events: none;
+    }
+  }
+}
+
+body {
+  min-height: 100%;
+  height: 100%;
+  font-size: 15px;
+  line-height: 1.4;
+  color: $color;
+  font-family: $opensans-regular;
+  min-width: 320px;
+  background: image-url('bg/bg.jpg');
+
+  &.front {
+    font-size: 14px;
+  }
+}
+
+*, :after, :before {
+  @include box-sizing(border-box);
+  outline: none;
+}
+
+hr {
+  margin: 14px 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: normal;
+  margin: 0;
+  line-height: 1.4;
+}
+
+h3 {
+  text-transform: uppercase;
+  font-family: $opensans-light;
+  margin-bottom: 10px;
+  font-size: 24px;
+
+  @media (min-width: $bp-small) {
+    font-size: 26px;
+  }
+
+  @media (min-width: $bp-middle) {
+    font-size: 32px;
+  }
+}
+
+h4, h5, h6 {
+  font-family: $opensans-bold;
+}
+
+h4 {
+  font-size: 18px;
+  margin-bottom: 16px;
+
+  @media (min-width: $bp-small) {
+    font-size: 22px;
+  }
+}
+
+h5 {
+  text-transform: uppercase;
+  font-size: 18px;
+}
+
+h6 {
+  text-transform: uppercase;
+  font-size: 16px;
+}
+
+p {
+  margin: 0 0 16px;
+}
+
+img[style*="float:left"], img[style*="float:right"],
+img[style*="float: left"], img[style*="float: right"] {
+  float: none !important;
+  display: block;
+  margin-bottom: 20px;
+
+  @media (max-width: $bp-small - 1) {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  @media (min-width: $bp-small) {
+    margin-bottom: 0;
+  }
+}
+
+img[style*="float:left"], img[style*="float: left"] {
+
+  @media (min-width: $bp-small) {
+    float: left !important;
+  }
+}
+
+img[style*="float:right"], img[style*="float: right"] {
+
+  @media (min-width: $bp-small) {
+    float: right !important;
+  }
+}
+
+ul, ol {
+  margin: 0;
+  padding: 0 0 0 16px;
+
+  li {
+    margin: 0 0 16px;
+    padding: 0;
+  }
+}
+
+ul.style-a, ul.style-b, ul.style-c, ul.style-d  {
+  padding: 0;
+
+  li {
+    list-style: none;
+    position: relative;
+    padding-left: 15px;
+    margin-bottom: 6px;
+    margin-left: 0;
+
+    &:before {
+      @include pseudo-block($left: 0, $top: 3px);
+      border-left: 9px solid $color-j;
+      border-top: 7px solid transparent;
+      border-bottom: 7px solid transparent;
+    }
+  }
+}
+
+ul.style-a a {
+  color: $color;
+}
+
+ul.style-b a {
+  color: $color-j;
+}
+
+ul.style-c {
+
+  li:before {
+    border-left-color: $color-l;
+  }
+
+  a {
+    color: $color-l;
+  }
+}
+
+ul.style-d {
+
+  li:before {
+    border-left-color: $color-m;
+  }
+
+  a {
+    color: $color;
+    font-size: 16px;
+  }
+}
+
+.list-type-a {
+
+  ul {
+    margin: 0;
+    padding: 0;
+
+    li {
+      list-style: none;
+      margin: 0 0 6px;
+      padding: 0;
+    }
+  }
+}
+
+.list-type-b {
+  max-width: 725px;
+
+  ul {
+    margin: 0;
+    padding: 0;
+
+    li {
+      vertical-align: top;
+      margin: 0 0 5px;
+      list-style: none;
+
+
+      @media (min-width: $bp-small) {
+        width: 360px;
+        padding-right: 15px;
+        display: inline-block;
+      }
+    }
+  }
+}
+
+a {
+  color: $color-r;
+  font-family: $opensans-bold;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+strong {
+  font-family: $opensans-bold;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  vertical-align: top;
+}
+
+/*move top bottom*/
+@keyframes move-top-bottom {
+
+  0% {
+    @include transform(translate(0, 0));
+  }
+
+  50% {
+    @include transform(translate(0, -5px));
+  }
+
+  100% {
+    @include transform(translate(0, 0));
+  }
+}
+
+@-webkit-keyframes move-top-bottom {
+
+  0% {
+    @include transform(translate(0, 0));
+  }
+
+  50% {
+    @include transform(translate(0, -5px));
+  }
+
+  100% {
+    @include transform(translate(0, 0));
+  }
+}
+
+/*move right left*/
+@keyframes move-right-left {
+
+  0% {
+    @include transform(translate(0, 0));
+  }
+
+  50% {
+    @include transform(translate(5px, 0));
+  }
+
+  100% {
+    @include transform(translate(0, 0));
+  }
+}
+
+@-webkit-keyframes move-right-left {
+
+  0% {
+    @include transform(translate(0, 0));
+  }
+
+  50% {
+    @include transform(translate(5px, 0));
+  }
+
+  100% {
+    @include transform(translate(0, 0));
+  }
+}
+
+.collapsed-block {
+
+  &.collapsed {
+
+    .collapsed-content {
+      display: none;
+    }
+  }
+}
+
+.media-wrapper {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow:hidden;
+
+  .contextual-links-region {
+    position: static;
+  }
+
+  iframe, object, embed, img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}

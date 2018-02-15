@@ -1,0 +1,109 @@
+.section {
+  position: relative;
+  overflow: hidden;
+
+  &.item-style-a .inner {
+    //padding-bottom: 50.96296296296297%;
+    padding-bottom: 56.25%;
+
+    iframe, object, embed, video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    video {
+
+      &::-webkit-media-controls-panel {
+        display: none!important;
+        -webkit-appearance: none;
+      }
+
+      &::-webkit-media-controls-play-button {
+        display: none!important;
+        -webkit-appearance: none;
+      }
+
+      &::-webkit-media-controls-start-playback-button {
+        display: none!important;
+        -webkit-appearance: none
+      }
+    }
+  }
+
+  .bg, .bg-hover, .inner .item-content, .link, .link-type-a {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .bg, .bg-hover {
+    @include background-size(cover);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  .link, .link-type-a {
+    z-index: 2;
+  }
+
+  .link {
+    text-decoration: none;
+
+    &:before {
+      @include pseudo-block($left: 0, $top: 100%);
+      width: 100%;
+      height: 300px;
+      background: $color;
+      -webkit-transform-origin: right center;
+      -ms-transform-origin: right center;
+      transform-origin: right center;
+      @include transition(transform .6s, top .6s);
+    }
+
+    .link-text {
+      @include transition(opacity .6s, transform .6s, visibility .6s);
+      color: $color-a;
+      font-family: $opensans-bold;
+      text-transform: uppercase;
+      position: absolute;
+
+      &:before {
+        @include translate(0, -50%);
+      }
+    }
+
+    &.not-link-text:before {
+      display: none;
+    }
+  }
+
+  .link-type-a {
+
+    &:hover ~ .item-content {
+
+      h2 {
+        color: rgba(0, 0, 0, .3);
+
+        .ico {
+          color: rgba(0, 0, 0, .3) !important;;
+        }
+      }
+    }
+
+    & ~ .item-content {
+
+      h2, .ico {
+        @include transition(color .3s);
+      }
+    }
+  }
+}

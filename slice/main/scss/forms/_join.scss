@@ -1,0 +1,33 @@
+.form-join {
+
+  @media (min-width: $bp-small) {
+    .form-part {
+      padding-left: 128px;
+    }
+
+    .field-email, .field-first-name, .field-city, .field-organization {
+
+      label {
+        text-align: right;
+        padding-left: 0;
+        width: 128px;
+      }
+    }
+  }
+
+  p {
+    margin-bottom: 8px;
+  }
+
+  label {
+    text-transform: uppercase;
+  }
+
+  .form-submit {
+    color: $color-f;
+
+    &:hover {
+      color: #fff;
+    }
+  }
+}

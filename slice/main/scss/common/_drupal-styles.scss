@@ -1,0 +1,109 @@
+.logged-in {
+
+  div.tabs, .contextual-links-wrapper {
+
+    a {
+      opacity: 1 !important;
+      color: #000 !important;
+    }
+  }
+
+  .contextual-links-wrapper {
+    font-size: 13px;
+
+    li {
+      font-weight: normal;
+      text-decoration: none;
+      text-transform: none;
+      margin: 0 !important;
+      font-family: $opensans-regular;
+      padding: 0 !important;
+
+      a {
+        text-decoration: none;
+        text-transform: none;
+      }
+    }
+  }
+
+  div.tabs {
+    position: absolute;
+    z-index: 500;
+    right: 0;
+    top: 0;
+    font-size: 13px;
+
+    .tabs {
+      border-bottom: none;
+      padding: 0;
+
+      li {
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 2px;
+
+        &.active a {
+          border: none;
+        }
+      }
+
+      a {
+        border: none;
+        margin: 0;
+        padding: 5px 18px;
+        display: block;
+      }
+    }
+  }
+
+  .top-nav, .bottom-nav {
+
+    &.contextual-links-region {
+      position: static;
+    }
+
+    .contextual-links-wrapper {
+      right: 49px;
+    }
+  }
+
+  .top-nav.contextual-links-region .contextual-links-wrapper {
+    top: 19px;
+  }
+
+  .bottom-nav.contextual-links-region .contextual-links-wrapper {
+    top: 58px;
+  }
+
+  .node-car-part {
+
+    &.contextual-links-region {
+      position: static;
+    }
+
+    .contextual-links-wrapper {
+      top: 50%;
+      margin-top: -28px;
+      left: 464px;
+      right: auto;
+    }
+  }
+
+  #block-views-car-parts-block-1 {
+
+    .contextual-links-wrapper {
+      top: -176px;
+    }
+  }
+
+  .b-leadership div.contextual-links-wrapper {
+    top: 50%;
+  }
+
+  .view-manage-products, .view-manage-old-products {
+
+    .views-table {
+      width: 100%;
+    }
+  }
+}

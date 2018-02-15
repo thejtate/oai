@@ -1,0 +1,42 @@
+.b-news {
+
+  @media (min-width: $bp-middle) {
+    font-size: 16px;
+  }
+
+  .btn-back {
+    margin-bottom: 20px;
+    display: inline-block;
+  }
+
+  .news-date {
+    margin-bottom: 20px;
+    font-family: $opensans-bold;
+  }
+
+  h4 {
+    font-size: 18px;
+    margin-bottom: 20px;
+
+    @media (min-width: $bp-middle) {
+      font-size: 24px;
+    }
+  }
+
+  ul {
+    margin: 0 0 20px;
+    padding: 0;
+    list-style: none;
+
+    li {
+      margin: 0 0 4px 10px;
+      padding-left: 20px;
+      position: relative;
+
+      &:before {
+        @include pseudo-block($top: -1px, $left: 0);
+        content: '-';
+      }
+    }
+  }
+}

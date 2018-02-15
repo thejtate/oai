@@ -1,0 +1,5 @@
+INSTALLATION
+
+1) Enable module
+2) Enable CKEDITOR plugin and Add button in CKEDITOR settings admin/config/content/ckeditor
+3) Enable Selz filter in Text formats settings admin/config/content/formats

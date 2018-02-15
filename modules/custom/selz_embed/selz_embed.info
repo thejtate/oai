@@ -1,0 +1,9 @@
+name = Selz embed
+description = Selz embed integration
+package = Selz
+core = 7.x
+version = 7.x-1.x
+interface translation project = FALSE
+
+;files[] =
+;dependencies[] = 

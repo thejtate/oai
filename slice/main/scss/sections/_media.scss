@@ -1,0 +1,164 @@
+body:not(.front) .section-media {
+  height: 220px;
+
+  @media (min-width: $bp-small) {
+    height: auto;
+  }
+
+  .btn-play {
+    position: absolute;
+    right: 50%;
+    @include translate(50%, 0);
+    top: 40px;
+    z-index: 5;
+
+    @media (min-width: $bp-small) {
+      @include translate(0, 0);
+      top: auto;
+      right: 20px;
+      bottom: 20px;
+    }
+
+    &:before {
+      @include translate(0, -50%);
+    }
+  }
+}
+
+.section-media {
+  line-height: 1.2;
+
+  header {
+    background: rgba(255, 255, 255, .8);
+    padding: 10px 20px;
+    text-transform: uppercase;
+    @include transition(opacity .3s, visibility .3s);
+
+    @media (min-width: $bp-small) {
+      padding: 12px 46px;
+      margin: 0 -26px;
+    }
+  }
+
+  .btn-play {
+    font-size: 16px;
+    text-decoration: none;
+    color: #fff;
+    text-transform: uppercase;
+    font-family: $opensans-bold;
+    padding-left: 40px;
+
+    @media (min-width: $bp-large) {
+      font-size: 18px;
+    }
+
+    &:before {
+      @include pseudo-block($left: 0, $top: 50%);
+      @include oneline-sprite-box($icons, video-icon);
+    }
+  }
+
+  .link {
+
+    &:hover {
+
+      &:before {
+        @include transform(skewY(-17deg) translate(0, -120px));
+      }
+
+      .link-text {
+        @include translate(50%, 0);
+
+        @media (min-width: $bp-small) {
+          @include transform(translate(0, -5px));
+        }
+      }
+    }
+
+    &:before {
+      opacity: .7;
+      @include transform(skewY(-17deg) translate(0, -110px));
+      display: none;
+
+      @media (min-width: $bp-small) {
+        display: block;
+      }
+    }
+
+    .link-text {
+      right: 50%;
+      bottom: 18px;
+      @include translate(50%, 0);
+
+      @media (min-width: $bp-small) {
+        @include translate(0, 0);
+        right: 20px;
+      }
+    }
+  }
+
+  h1 {
+    font-family: $opensans-light;
+    font-size: 14px;
+    margin-bottom: 10px;
+
+    @media (min-width: $bp-small) {
+      font-size: 24px;
+    }
+
+    @media (min-width: $bp-large) {
+      font-size: 34px;
+    }
+  }
+
+  h2 {
+    font-family: $opensans-bold;
+    font-size: 12px;
+    text-align: right;
+
+    @media (min-width: $bp-small) {
+      font-size: 16px;
+    }
+
+    @media (min-width: $bp-large) {
+      font-size: 24px;
+    }
+  }
+
+  .img {
+
+    img {
+      max-width: none;
+      width: auto;
+      left: 50%;
+      position: absolute;
+      height: 100%;
+      @include translate(-50%, 0);
+
+      @media (min-width: $bp-small) {
+        max-width: 100%;
+        height: auto;
+        width: 100%;
+        position: static;
+        @include translate(0, 0);
+      }
+    }
+  }
+
+  .logo {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    @include background-image(linear-gradient(top, transparent 50%, rgba(0, 0, 0, .8) 100%));
+
+    .logo-wrapper {
+      position: absolute;
+      left: 26%;
+      right: 26%;
+      bottom: 15px;
+    }
+  }
+}

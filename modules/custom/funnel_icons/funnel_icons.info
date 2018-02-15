@@ -1,0 +1,9 @@
+name = Funnel icons
+description = Funnel icons field widget and display
+package = Funnel
+core = 7.x
+version = 7.x-1.x
+interface translation project = FALSE
+
+;files[] =
+;dependencies[] = 

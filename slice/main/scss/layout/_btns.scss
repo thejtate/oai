@@ -1,0 +1,74 @@
+.btn-wrap {
+
+  &.style-a a {
+    color: $color-a;
+    background: $color;
+
+    &:hover {
+      background: transparent;
+      color: $color;
+      border-color: $color;
+    }
+  }
+
+  a {
+    display: inline-block;
+    vertical-align: top;
+    font-size: 14px;
+    text-transform: uppercase;
+    font-family: $opensans-bold;
+    color: $color-d;
+    background: $color-a;
+    padding: 8px 16px;
+    border: 1px solid $color-a;
+    text-decoration: none;
+    @include transition(background .4s, color .4s);
+
+    @media (min-width: $bp-large) {
+      font-size: 15px;
+      padding: 10px 20px;
+    }
+
+    &:hover {
+      background: transparent;
+      color: $color-a;
+    }
+  }
+}
+
+.btn-edit {
+  text-align: right;
+}
+
+.btn-to-top.style-a {
+  position: fixed;
+  right: 12px;
+  bottom: 23px;
+  z-index: 10;
+  opacity: 0;
+   visibility:hidden;
+   @include transition(opacity .3s);
+
+  &.active {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  a {
+    display: block;
+    padding: 0;
+    @include transition(opacity .2s);
+
+    &:before {
+      position: relative;
+      left: auto;
+      top:auto;
+      @include oneline-sprite-box($icons, btn-to-top);
+      border: none;
+    }
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}

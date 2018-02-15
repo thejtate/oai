@@ -1,0 +1,15 @@
+diff --git a/webform_mailchimp.module b/webform_mailchimp.module
+index f1420bc..6a1f24c 100644
+--- a/webform_mailchimp.module
++++ b/webform_mailchimp.module
+@@ -193,8 +193,8 @@ function webform_mailchimp_log_subscription($email_address, $status, $error_code
+       'E-mail not subscribed: %email Error: %error_code <br> %error_message',
+       array(
+         '%email' => $email_address,
+-        '%error_message' => $error_code,
+-        '%error_code' => $error_message,
++        '%error_message' => $error_message,
++        '%error_code' => $error_code,
+       ),
+       WATCHDOG_ERROR
+     );

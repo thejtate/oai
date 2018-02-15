@@ -1,0 +1,393 @@
+<?php
+/**
+ * @file
+ * Custom site functionality
+ */
+define('OAI_CUSTOM_NEWS_BASE_PATH', 'community-news');
+define('OAI_BOARD_NID', 78);
+define('OAI_FOUNDATION_BOARD_NID', 79);
+define('OAI_CONTACT_US_NID', 6);
+
+module_load_include("inc", "oai_custom", "includes/oai_custom.maps");
+
+/**
+ * Implements hook_menu().
+ */
+function oai_custom_menu() {
+  $items['admin/config/oai'] = array(
+    'title' => 'Oai Configuration',
+    'description' => 'Oai Configuration page',
+    'type' => MENU_NORMAL_ITEM,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('oai_custom_admin_settings'),
+    'access arguments' => array('administer content site configuration'),
+    'file' => 'oai_custom.admin.inc',
+    'file path' => drupal_get_path('module', 'oai_custom') . '/includes',
+  );
+
+  //subscribe link placeholder
+  $items['<subscribe>'] = array(
+    'page callback' => 'drupal_not_found',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  $items['subscribe-popup'] = array(
+    'page callback' => 'drupal_not_found',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+
+/**
+ * Implements hook_permission().
+ */
+function oai_custom_permission() {
+  return array(
+    'administer content site configuration' => array(
+      'title' => t('Administer main content variables'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_theme().
+ */
+function oai_custom_theme($existing, $type, $theme, $path) {
+  $theme_path = drupal_get_path('module', 'oai_custom');
+  return array(
+    'oai_custom__social_links' => array(
+      'template' => 'oai-custom--social-links',
+      'arguments' => array('data' => NULL),
+      'path' => $theme_path . '/templates',
+    ),
+    'oai_custom__news_sidebar' => array(
+      'template' => 'oai-custom--news-sidebar',
+      'arguments' => array(
+        'filter' => NULL,
+        'search_form' => NULL,
+      ),
+      'path' => $theme_path . '/templates',
+    ),
+  );
+}
+
+/**
+ * Override of theme_link()
+ * This function will render link if it is "nolink" or "separator". Otherwise it will call originally
+ * overwritten menu_item_link function.
+ */
+function oai_custom_link(array $variables) {
+  if (($variables['path'] == '<subscribe>') ||
+    ($variables['path'] == 'subscribe-popup')) {
+    $variables['options']['attributes']['data-target'] = '#newsletter';
+    $variables['options']['attributes']['data-toggle'] = 'modal';
+    $variables['options']['html'] = TRUE;
+    $variables['path'] = '';
+    $variables['options']['fragment'] = ' ';
+  }
+
+  // Call the original theme function for normal menu link.
+  return theme('oai_custom_link_default', $variables);
+}
+
+/**
+ * Implementation of hook_theme_registry_alter()
+ * We replace theme_menu_item_link with our own function.
+ */
+function oai_custom_theme_registry_alter(&$registry) {
+  // Save previous value from registry in case another theme overwrites menu_item_link
+  $registry['oai_custom_link_default'] = $registry['link'];
+  $registry['link']['function'] = 'oai_custom_link';
+}
+
+/**
+ * Implementation of hook_form_FROM_ID_alter()
+ * Description changed, added nolink and separator as path types.
+ */
+function oai_custom_form_menu_edit_item_alter(&$form, &$form_state) {
+  // Some menu items have a pre-defined path which cannot be modified hence no default_value
+  if (isset($form['link_path']['#default_value'])) {
+    $default_value = $form['link_path']['#default_value'];
+
+    if (preg_match('/^<subscribe>\/[0-9]+$/', $default_value)) {
+      $default_value = '<subscribe>';
+    }
+
+    $form['link_path']['#default_value'] = $default_value;
+    $form['link_path']['#description'] .=  ' ' . t('Enter "%subscribe" to generate link for subscribe popup.', array('%subscribe' => '<subscribe>'));
+  }
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function oai_custom_block_info() {
+  $blocks = array();
+  $blocks['oai_custom_social_block'] = array(
+    'info' => t('Social block'),
+  );
+  $blocks['contacts-full'] = array(
+    'info' => t('Contacts full block.'),
+  );
+  $blocks['oai_custom_news_sidebar_block'] = array(
+    'info' => t('News sidebar'),
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function oai_custom_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 'oai_custom_social_block':
+      $block['subject'] = t('Social block');
+      $block['content'] = _oai_custom_social_block_content();
+      break;
+    case 'contacts-full':
+      $block = oai_custom_bean_block_view('footer-address--copyright', 'default');
+      break;
+    case 'oai_custom_news_sidebar_block':
+      $block['subject'] = '';
+      $block['content'] = _oai_custom_news_sidebar_block_content();
+      break;
+  }
+
+  return $block;
+}
+
+/**
+ * Social block.
+ *
+ * @return null|string
+ */
+function _oai_custom_social_block_content() {
+  $socials = _oai_custom_admin_settings_map();
+  $output = theme("oai_custom__social_links", array('data' => $socials));
+  return $output;
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function oai_custom_preprocess_oai_custom__social_links(&$vars) {
+  $items = array();
+
+  foreach ($vars['data'] as $key => $data) {
+    $url = variable_get($key, "");
+    $title = (isset($data['title'])) ? $data['title'] : "";
+    if (!empty($url)) {
+      $items[] = array(
+        'data' => l('', $url, array('attributes' => array('title' => $title, 'target'=>'_blank'))),
+        'class' => array($data['class'])
+      );
+    }
+  }
+  $vars['social_menu'] = theme('item_list', array('items' => $items), NULL, 'ul');
+}
+
+/**
+ * Based on bean_block_view(). Allow to load bean blocks with custom view mode.
+ *
+ * @param string $delta
+ * @param null $view_mode
+ * @return array
+ */
+function oai_custom_bean_block_view($delta = '', $view_mode = NULL) {
+  $return = array();
+  $bean = bean_load_delta($delta);
+
+  if (entity_access('view', 'bean', $bean) && $bean) {
+    $content = $bean->view(!empty($view_mode) ? $view_mode : $bean->view_mode);
+    if (!is_array($content)) {
+      $content = array(
+        '#markup' => $content,
+      );
+    }
+
+    $return = array(
+      'content' => $content,
+      'subject' => isset($bean->title) ? filter_xss($bean->title, $allowed_tags = array('em', 'strong', 'i', 'b')) : '',
+    );
+  }
+
+  if (!empty($return['content']) && module_exists('contextual')) {
+    $return['content']['#contextual_links']['bean'] = array(
+      'block', array($bean->Identifier(), 'edit')
+    );
+  }
+
+  return $return;
+}
+
+
+/**
+ * Implements hook_form_alter().
+ */
+function oai_custom_form_alter(&$form, &$form_state, $form_id) {
+  switch ($form_id) {
+    case 'views_exposed_form':
+      if (($form['#id'] == 'views-exposed-form-news-page-1') && (isset($form['search']))) {
+        global $base_path;
+        $form['search']['#attributes']['placeholder'] = t('SEARCH STORIES');
+        $form['#action'] = $base_path . OAI_CUSTOM_NEWS_BASE_PATH;
+      }
+      break;
+    case 'user_login_block':
+    case 'user_register_form':
+    case 'user_login':
+      $form['#submit'][] = 'oai_custom_redirect_submit';
+
+      if ($form_id == 'user_login_block') {
+        $form['#validate'][] = '_oai_custom_form_user_login_validate';
+      }
+      break;
+  }
+}
+
+/**
+ * Get sidebar.
+ */
+function _oai_custom_news_sidebar_block_content() {
+
+  $filter = _oai_news_sidebar_get_filter();
+
+  $search_block = block_load('views', '-exp-news-page_1');
+  $search_form = _block_get_renderable_array(_block_render_blocks(array($search_block)));
+  $search_form = render($search_form);
+
+  $sidebar = theme('oai_custom__news_sidebar', array(
+    'filter' => $filter,
+    'search_form' => $search_form,
+  ));
+
+  return $sidebar;
+}
+
+
+/**
+ * Get tags block.
+ *
+ * @return string
+ * @throws \Exception
+ */
+function _oai_news_sidebar_get_filter() {
+  $query = db_select('node', 'n');
+  $query->leftJoin('field_data_field_news_type', 'news_type', "n.nid = news_type.entity_id AND (news_type.entity_type = 'node' AND news_type.deleted = '0')");
+  $query->leftJoin('taxonomy_term_data', 'term_data', "news_type.field_news_type_tid = term_data.tid");
+  $query->leftJoin('taxonomy_vocabulary', 'tv', "term_data.vid = tv.vid");
+  $query->fields('term_data', array('tid', 'name'));
+  $query->condition('tv.machine_name', 'news');
+  $query->groupBy('term_data.name');
+  $query->orderBy('term_data.name', 'ASC');
+
+  $tags = $query->execute()->fetchAllKeyed();
+
+  $items[] = l(t('All'), OAI_CUSTOM_NEWS_BASE_PATH);
+
+  if (isset($tags) && !empty($tags) && is_array($tags)) {
+    foreach ($tags as $tid => $name) {
+      $items[] = l($name, OAI_CUSTOM_NEWS_BASE_PATH . '/' . $tid);
+    }
+    $item_list = array(
+      'items' => $items,
+      'type' => 'ul',
+      'attributes' => array('class' => array('style-d')),
+    );
+    return theme('item_list', $item_list);
+  }
+}
+
+/**
+ * Implements hook_views_pre_execute().
+ */
+function oai_custom_views_pre_execute(&$view) {
+  switch ($view->name) {
+    case 'news':
+      if (isset($view->exposed_input['search']) && !empty($view->exposed_input['search'])) {
+        $view->args = array();
+      }
+      break;
+  }
+}
+
+/**
+ * Helper submit function.
+ */
+function oai_custom_redirect_submit($form, &$form_state) {
+  GLOBAL $user;
+  foreach ($user->roles as $user_role_id => $user_role_name) {
+    if ($user_role_name == 'board') {
+      $_GET['destination'] = 'node/' . OAI_BOARD_NID;
+    }
+    if ($user_role_name == 'foundation-board') {
+      $_GET['destination'] = 'node/' . OAI_FOUNDATION_BOARD_NID;
+    }
+  }
+}
+
+/**
+ * Implements hook_views_query_alter().
+ */
+function oai_custom_views_query_alter(&$view, &$query) {
+  switch ($view->name) {
+    case 'audition_schedule_sidebar':
+      if ($view->current_display == 'block') {
+        $alias = drupal_get_path_alias();
+        $alias_parts = explode('/', $alias);
+        $first_arg = isset($alias_parts[0]) ? $alias_parts[0] : '';
+        $second_arg = isset($alias_parts[1]) ? $alias_parts[1] : '';
+        if (($first_arg == 'disciplines') && $second_arg) {
+          $second_arg_parts = explode('-', $second_arg);
+
+          $query->add_table('field_data_field_schedule_items_title','field_collection_item');
+          $conditions = db_and();
+
+          if (isset($second_arg_parts[1])) {
+            foreach ($second_arg_parts as $title_part) {
+              $conditions->condition('field_data_field_schedule_items_title.field_schedule_items_title_value', '%' . db_like($title_part) . '%', 'LIKE');
+            }
+          }
+          else {
+            $conditions->condition('field_data_field_schedule_items_title.field_schedule_items_title_value', $second_arg);
+          }
+
+          $query->add_where(0, $conditions);
+        }
+      }
+      break;
+  }
+}
+
+/**
+ * User login block form validation.
+ *
+ * @param $form
+ * @param $form_state
+ */
+function _oai_custom_form_user_login_validate(&$form, &$form_state) {
+  $old_msg = drupal_get_messages();
+  $error_message = t('Sorry, unrecognized username or password.');
+  $show_message = FALSE;
+
+  if (!empty($old_msg) && !empty($old_msg['error'])) {
+    foreach ($old_msg['error'] as $error) {
+      if (strpos($error, $error_message) !== false) {
+        $show_message = TRUE;
+      }
+    }
+    if ($show_message) {
+      $output = "<div class=\"messages error\">\n";
+      $output .= $error_message . ' ' . t('Forgot username or password, please !url.',
+          array('!url' => l(t('contact us directly'), "node/" . OAI_CONTACT_US_NID)));
+      $output .= "</div>\n";
+      $form['name']['#prefix'] = $output;
+    }
+  }
+
+
+}

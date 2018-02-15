@@ -1,0 +1,62 @@
+.form-login {
+  padding: 20px;
+  float: none;
+  margin: 0 auto;
+
+  @media (min-width: $bp-small) {
+    padding: 45px 0;
+  }
+
+  @media (min-width: $bp-middle) {
+    padding: 45px 34px;
+  }
+
+  label {
+    white-space: nowrap;
+    font-size: 14px;
+    text-transform: uppercase;
+    width: 100px;
+    text-align: right;
+    padding-right: 10px;
+
+    @media (min-width: $bp-small) {
+      margin: 0;
+      position: absolute;
+      top: 50%;
+      @include transform(translateY(-50%))
+    }
+  }
+
+  .form-item {
+
+    @media (min-width: $bp-small) {
+      position: relative;
+    }
+
+    input:not([type=submit]):not([type=checkbox]):not([type=radio]) {
+      border: 1px solid $color;
+
+      @media (min-width: $bp-small) {
+        width: calc(100% - 100px);
+        margin-left: 100px;
+      }
+    }
+  }
+
+  .form-actions {
+    text-align: right;
+  }
+
+
+  .form-submit {
+    background: $color;
+    color: $color-a;
+    border: 1px solid $color;
+    font-size: 13px;
+
+    &:hover {
+      background: $color-a;
+      color: $color;
+    }
+  }
+}

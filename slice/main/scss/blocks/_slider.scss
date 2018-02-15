@@ -1,0 +1,102 @@
+.b-slider.flexslider {
+  position: relative;
+  margin: 0 auto;
+  width: 245px;
+
+  @media (min-width: $bp-small) {
+    width: 500px;
+  }
+
+  @media (min-width: $bp-middle) {
+    width: 410px;
+  }
+
+  @media (min-width: $bp-large) {
+    width: 500px;
+  }
+
+
+  .slides > li {
+
+    .img {
+      border: 1px solid #828279;
+      position: relative;
+      height: 300px;
+
+      @media (min-width: $bp-small) {
+        height: 500px;
+      }
+
+      img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        @include translate(-50%, -50%);
+        width: auto;
+        max-height: 100%;
+      }
+    }
+
+    .caption {
+      font-family: $OpenSans-Italic;
+      margin: 12px 0 0;
+      text-align: center;
+    }
+  }
+
+  .flex-direction-nav {
+    display: block;
+
+    li {
+      padding: 0;
+      margin: 0;
+    }
+
+    .flex-nav-prev, .flex-nav-next {
+      @include text-hide();
+    }
+
+    .flex-prev {
+      left: -41px;
+    }
+
+    .flex-next {
+      right: -41px;
+
+     &:before {
+       @include transform(rotate(180deg) translate(-50%, -50%));
+       -moz-transform-origin: 0 0;
+       -ms-transform-origin: 0 0;
+       -webkit-transform-origin: 0 0;
+       transform-origin: 0 0;
+      }
+    }
+
+    a {
+      text-decoration: none;
+      display: block;
+      width: 40px;
+      top: 0;
+      bottom: 0;
+      margin: 0;
+      position: absolute;
+      z-index: 10;
+      overflow: hidden;
+      cursor: pointer;
+      @include transition(opacity .3s);
+
+      &:hover {
+        opacity: .7;
+      }
+
+      &:before {
+        @include pseudo-block($top: 50%, $left: 50%);
+        border-right: 22px solid $color-a;
+        border-top: 17px solid transparent;
+        border-bottom: 17px solid transparent;
+        @include transform(translate(-50%, -50%));
+        margin-top: -20px;
+      }
+    }
+  }
+}

@@ -1,0 +1,68 @@
+<?php
+
+/**
+ * Implements hook_node_insert().
+ */
+function oai_timeline_element_node_insert($node) {
+  switch ($node->type) {
+
+    case 'artist':
+      if (!empty($node->field_art_show_in_timeline_list[LANGUAGE_NONE]) && $node->is_new) {
+
+        $node_wrapper = entity_metadata_wrapper('node', $node);
+        $field_coll_content = $node_wrapper->field_artist_institute_info_fc->value();
+        foreach ($field_coll_content as $key => $value) {
+          $node_timeline = new stdClass();
+          $node_timeline->type = 'timeline_element';
+          node_object_prepare($node_timeline);
+
+          $art_form_type = '';
+          if (!empty($value->field_timeline_element_term[LANGUAGE_NONE][0]['tid'])) {
+            $timeline_year = $value->field_timeline_element_term[LANGUAGE_NONE][0]['tid'];
+            $node_timeline->field_timeline_element_term[LANGUAGE_NONE][0]['tid'] = $timeline_year;
+            $art_form_type = taxonomy_term_load($value->field_timeline_element_term[LANGUAGE_NONE][0]['tid']);
+            $art_form_type = $art_form_type->name;
+          }
+          $node_timeline->title = $node->title;
+          $node_timeline->field_timeline_el_show_link_chck[LANGUAGE_NONE][0]['value'] = FALSE;
+          if (!empty($value->field_timeline_el_color_list[LANGUAGE_NONE][0]['value'])) {
+            $node_timeline->field_timeline_el_color_list[LANGUAGE_NONE][0]['value'] = $value->field_timeline_el_color_list[LANGUAGE_NONE][0]['value'];
+          }
+          if (!empty($node->field_artist_website_link[LANGUAGE_NONE][0]['title'])) {
+            $node_timeline->field_artist_website_link[LANGUAGE_NONE][0]['title'] = $node->field_artist_website_link[LANGUAGE_NONE][0]['title'];
+          }
+          if (!empty($node->field_artist_website_link[LANGUAGE_NONE][0]['url'])) {
+            $node_timeline->field_artist_website_link[LANGUAGE_NONE][0]['url'] = $node->field_artist_website_link[LANGUAGE_NONE][0]['url'];
+          }
+
+          foreach ($value->field_artist_art_form_term[LANGUAGE_NONE] as $item) {
+            $term = taxonomy_term_load($item['tid']);
+            $art_form_type .= '|' . $term->name;
+          }
+          $node_timeline->body[LANGUAGE_NONE][0]['value'] = $art_form_type;
+          node_save($node_timeline);
+
+        }
+      }
+      break;
+
+
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function oai_timeline_element_views_pre_render(&$view) {
+  if ($view->name == 'featured_past_artists'){
+// cleaning output for featured_past_artists page, from duplicate content 
+    $new_results = array();
+    foreach ($view->result as $result) {
+      $nid = $result->nid;
+      if (!array_key_exists($nid, $new_results)) {
+        $new_results[$nid] = $result;
+      }
+    }
+    $view->result = $new_results;
+  }
+}

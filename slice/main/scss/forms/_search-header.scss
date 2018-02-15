@@ -1,0 +1,64 @@
+.site-header .search {
+  padding-top: 5px;
+  width: 29px;
+
+  .top-search-button {
+    @include oneline-sprite-box($icons, search-icon);
+    @include transition(all .3s);
+    margin-left: 7px;
+
+    &:hover {
+      opacity: .6;
+    }
+  }
+
+  &.active {
+
+    .top-search-button {
+      opacity: 0;
+      visibility: hidden;
+      position: absolute;
+    }
+
+    form {
+      width: 132px;
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  form {
+    position: absolute;
+    top: 1px;
+    right: 0;
+    width: 0;
+    opacity: 0;
+    visibility: hidden;
+    @include transition(all .3s);
+
+    input:not([type=submit]):not([type=checkbox]):not([type=radio]) {
+      border: 1px solid $color;
+      @include input-placeholder($color);
+      color: $color;
+      width: 100%;
+      font-size: 11px;
+      padding: 5px 25px 5px 9px;
+      height: 25px;
+      line-height: 25px;
+    }
+
+    .form-submit {
+      @include transition(background .4s);
+      @include oneline-sprite-box($icons, search-icon);
+      @include text-hide();
+      border: none;
+      outline: none;
+      cursor: pointer;
+      margin: -9px 0 0;
+      padding: 0;
+      position: absolute;
+      top: 50%;
+      right: 6px;
+    }
+  }
+}
